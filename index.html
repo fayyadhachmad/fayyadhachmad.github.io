@@ -1,105 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Absensi</title>
-    <style>
-        /* CSS sama seperti sebelumnya */
-        body {
-            font-size: large;
-            padding: 0;
-            margin: 0;
-            background-color: rgb(154, 202, 186);
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            width: 300px;
-        }
-
-        label {
-            display: inline-block;
-            width: 120px;
-            text-align: left;
-        }
-
-        input[type="text"], select {
-            width: calc(100% - 130px);
-            padding: 5px;
-        }
-
-        .radio-group, .checkbox-group {
-            display: flex;
-            justify-content: flex-start;
-            width: 300px;
-        }
-
-        .radio-group input, .checkbox-group input {
-            margin-right: 10px;
-        }
-
-        .radio-group label, .checkbox-group label {
-            margin-right: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mokaflow Coffee</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome untuk ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
+
 <body>
 
-    <h1>Formulir Absensi</h1>
-    <form action="send_mail.php" method="post">
+  <header>
+    <div class="logo">Mokaflow Coffee</div>
+    <div class="menu-toggle" id="menu-toggle">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav id="nav">
+      <ul>
+        <li><a href="#home">Beranda</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#contact">Kontak</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <div class="form-group">
-            <label for="nama">Nama:</label>
-            <input type="text" id="nama" name="nama" value="" required />
-        </div>
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Selamat Datang di Mokaflow Coffee</h1>
+      <p>Temukan cita rasa kopi terbaik dengan suasana yang hangat dan tenang.</p>
+      <button class="btn" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Lihat Menu</button>
+    </div>
+  </section>
 
-        <div class="form-group">
-            <label for="npm">NPM Anda:</label>
-            <input type="text" id="npm" name="npm" value="" required />
-        </div>
+  <section class="about reveal">
+    <h2>Tentang Kami</h2>
+    <p>Mokaflow Coffee adalah tempat di mana aroma biji kopi segar berpadu dengan suasana yang nyaman. Kami menyajikan kopi berkualitas tinggi dari biji pilihan, diseduh dengan penuh perhatian oleh barista berpengalaman. Nikmati setiap tegukan dan rasakan aliran rasa yang khas di setiap cangkirnya.</p>
+  </section>
 
-        <div class="form-group radio-group">
-            <label>Jenis Kelamin:</label>
-            <input type="radio" id="laki-laki" name="jenis_kelamin" value="laki-laki" checked />
-            <label for="laki-laki">Laki-Laki</label>
+  <section id="menu" class="reveal">
+    <h2>Menu Kami</h2>
+    <div class="menu-container">
+      <div class="menu-item">
+        <img src="images/coffee-maker-coffee-shop.jpg" alt="Manual Brew">
+        <h3>Manual Brew</h3>
+        <p>Kopi pilihan dengan metode seduh manual yang menonjolkan karakter rasa unik dari setiap biji kopi.</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/iced-coffee-with-whipped-cream.jpg" alt="Es Kopi Susu">
+        <h3>Es Kopi Susu</h3>
+        <p>Kombinasi sempurna antara espresso, susu segar, dan sirup gula aren khas Mokaflow.</p>
+      </div>
+      <div class="menu-item">
+        <img src="images/sweet-pastry-assortment-top-view.jpg" alt="Pastry">
+        <h3>Pastry</h3>
+        <p>Temani kopimu dengan pastry lembut dan gurih buatan tangan dari dapur Mokaflow.</p>
+      </div>
+    </div>
+  </section>
 
-            <input type="radio" id="perempuan" name="jenis_kelamin" value="perempuan" />
-            <label for="perempuan">Perempuan</label>
-        </div>
+  <section id="contact" class="reveal">
+    <h2>Hubungi Kami</h2>
+    <div class="contact-info">
+      <p><i class="fa-solid fa-location-dot"></i> Jl. Kalimulya No. 15, Depok-Jawa Barat</p>
+      <p><i class="fa-solid fa-phone"></i> +62 856 9557 0167</p>
+      <p><i class="fa-solid fa-envelope"></i> mokaflow@coffee.id</p>
+      <p>
+        <a href="https://wa.me/6285695570167" target="_blank" class="contact-icon"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="https://instagram.com/mokaflow_coffe" target="_blank" class="contact-icon"><i class="fa-brands fa-instagram"></i></a>
+      </p>
+    </div>
+  </section>
 
-        <div class="form-group checkbox-group">
-            <input type="checkbox" id="hadir" name="hadir" />
-            <label for="hadir">Hadir</label>
+  <footer>
+    <p>&copy; 2025 Mokaflow Coffee. All Rights Reserved.</p>
+  </footer>
 
-            <input type="checkbox" id="tidak_hadir" name="tidak_hadir" />
-            <label for="tidak_hadir">Tidak Hadir</label>
-        </div>
-
-        <div class="form-group">
-            <label for="kelas">Kelas:</label>
-            <select id="kelas" name="asal_kota">
-                <option value="RM">RM</option>
-                <option value="Kota Bandung">RN</option>
-                <option value="Kota Semarang" selected>RZ</option>
-            </select>
-        </div>
-
-        <input style="font-size: x-large; font-family: 'Courier New', Courier, monospace;" type="submit" value="Kirim" />
-    </form>
+  <script src="script.js"></script>
 
 </body>
 </html>
