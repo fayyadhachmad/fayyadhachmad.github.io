@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kuis: Menyimpulkan Nama Tempat (SD Kelas 2)</title>
+<meta name="description" content="Kuis interaktif untuk anak SD: menyimpulkan nama tempat berdasarkan ciri-ciri. 29 soal, gambar, musik tenang, efek interaktif." />
+<style>
+  :root{
+    --bg1:#ffefe6; --bg2:#e8fff6; --card:#ffffff; --accent:#ff9aa2; --accent2:#ffb7b2;
+    --accent3:#c7f9cc; --text:#173f3b; --muted:#57736b;
+    --good:#7be495; --bad:#ff8a80;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family: "Poppins", "Segoe UI", Roboto, system-ui, -apple-system, Arial; background:linear-gradient(135deg,var(--bg1),var(--bg2)); color:var(--text)}
+  .app{
+    max-width:980px;margin:18px auto;padding:18px;display:grid;grid-template-columns:1fr 320px;gap:18px;
+  }
+  @media (max-width:920px){ .app{grid-template-columns:1fr;padding:12px} .side{order:2} }
+  header{grid-column:1/-1;display:flex;align-items:center;gap:12px}
+  .logo{
+    width:68px;height:68px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:30px;color:white;box-shadow:0 6px 18px rgba(0,0,0,0.08)
+  }
+  h1{margin:0;font-size:1.2rem}
+  p.lead{margin:2px 0 0;color:var(--muted);font-size:0.95rem}
+
+  /* Card / Quiz area */
+  .card{background:var(--card);border-radius:14px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,0.06)}
+  .quiz-main{min-height:420px;display:flex;flex-direction:column;gap:10px}
+  .top-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .progress{display:flex;gap:10px;align-items:center}
+  .bar{width:220px;height:12px;background:#f0f0f0;border-radius:999px;overflow:hidden}
+  .bar > i{height:100%;background:linear-gradient(90deg,var(--accent3),#9be7ff);display:block;width:0%}
+  .q-box{display:grid;grid-template-columns:1fr 240px;gap:12px;align-items:start}
+  @media (max-width:920px){ .q-box{grid-template-columns:1fr} }
+  .question{font-weight:700;font-size:1.15rem;margin-bottom:8px}
+  .image-wrap{border-radius:12px;overflow:hidden;height:200px;box-shadow:0 8px 18px rgba(0,0,0,0.06)}
+  .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:center;transition:transform .8s ease}
+  .image-wrap:hover img{transform:scale(1.05)}
+  .options{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+  .opt{
+    display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfbff);border:2px solid rgba(0,0,0,0.03);
+    cursor:pointer;transition:transform .14s ease, box-shadow .14s ease, background .14s; user-select:none;
+  }
+  .opt:active{transform:translateY(2px)}
+  .key{width:36px;height:36px;border-radius:10px;background:linear-gradient(180deg,#fff,#f6f6ff);display:flex;align-items:center;justify-content:center;font-weight:700;border:1px solid rgba(0,0,0,0.04)}
+  .opt:hover{box-shadow:0 8px 22px rgba(12,30,38,0.06)}
+  .opt.correct{border-color:rgba(123, 230, 149,0.9);background:linear-gradient(90deg, rgba(123,230,149,0.12), rgba(255,255,255,0.4))}
+  .opt.wrong{border-color:rgba(255,138,128,0.9);background:linear-gradient(90deg, rgba(255,138,128,0.08), rgba(255,255,255,0.4))}
+
+  .hint{font-size:0.95rem;color:var(--muted);margin-top:6px}
+  .controls{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:10px}
+  .btn{
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    color:white;padding:10px 14px;border-radius:12px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,0.12)
+  }
+  .ghost{background:transparent;border:2px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:10px;cursor:pointer}
+  .small{font-size:0.92rem;color:var(--muted)}
+
+  /* Side panel */
+  .side{display:flex;flex-direction:column;gap:12px}
+  .stats{display:flex;flex-direction:column;gap:6px}
+  .score{font-size:1.5rem;font-weight:800;color:var(--text)}
+  .celebrate{display:flex;gap:6px;align-items:center;justify-content:center;padding:10px;border-radius:12px;background:linear-gradient(90deg,#fff3f3,#fff7e6);font-weight:700;color:var(--muted)}
+  .mute-toggle{position:relative;display:flex;align-items:center;gap:8px}
+  .speaker{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,#fff,#f2f2ff);display:flex;align-items:center;justify-content:center;font-size:18px}
+  /* confetti */
+  .confetti{
+    position:absolute;pointer-events:none;z-index:9999;left:0;top:0;width:10px;height:14px;border-radius:2px;opacity:0;transform:translateY(-20px) rotate(10deg);
+  }
+
+  footer{grid-column:1/-1;text-align:center;color:var(--muted);font-size:0.9rem;margin-top:6px}
+  /* small helpers */
+  .center{display:flex;align-items:center;justify-content:center}
+  /* playful corners */
+  .decor-topright{position:absolute;right:16px;top:16px;font-size:26px;opacity:0.95}
+</style>
+</head>
+<body>
+  <div class="decor-topright">🌈</div>
+  <div class="app" role="application" aria-labelledby="title">
+    <header>
+      <div class="logo" aria-hidden>📚</div>
+      <div>
+        <h1 id="title">Kuis: Tebak Nama Tempat</h1>
+        <p class="lead">Baca ciri-cirinya, lalu pilih nama tempat yang tepat. Satu soal per layar — ayo bermain dan belajar!</p>
+      </div>
+    </header>
+
+    <main class="card quiz-main" id="mainCard" aria-live="polite">
+      <div class="top-row">
+        <div class="progress small">
+          <div>Soal <strong id="qnum">1</strong>/<span id="qtot">29</span></div>
+          <div class="bar" aria-hidden><i id="barFill"></i></div>
+        </div>
+        <div class="small">Skor: <strong id="sk">0</strong></div>
+      </div>
+
+      <div class="q-box" id="qbox">
+        <div>
+          <div class="question" id="qtext">Memuat soal...</div>
+          <div class="options" id="opts"></div>
+          <div class="hint small" id="hint">Pilih jawaban dengan mengetuk kartu jawaban.</div>
+        </div>
+
+        <aside class="side">
+          <div class="card stats center" style="padding:12px">
+            <div style="font-size:0.95rem;color:var(--muted)">Progress</div>
+            <div class="score" id="score">0</div>
+            <div class="small">Benar: <span id="countCorrect">0</span> • Salah: <span id="countWrong">0</span></div>
+          </div>
+
+          <div class="card" style="padding:12px">
+            <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+              <div class="small">Musik latar</div>
+              <div class="mute-toggle">
+                <div id="muteBtn" class="speaker" role="button" aria-pressed="false" title="Mute/Unmute">🔊</div>
+              </div>
+            </div>
+            <div style="margin-top:8px;color:var(--muted);font-size:0.92rem">Tekan tombol suara jika kamu ingin mematikan/menyalakan musik.</div>
+          </div>
+
+          <div id="celebrateBox" class="card celebrate hidden" style="position:relative;padding:10px">
+            <div id="celeText">Hebat! Ayo lanjutkan 🎉</div>
+          </div>
+
+          <div class="card" style="padding:12px;text-align:center">
+            <button id="restart" class="ghost">🔄 Mulai Ulang</button>
+          </div>
+        </aside>
+      </div>
+
+      <div class="controls">
+        <div>
+          <button id="prevBtn" class="ghost">← Sebelumnya</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="checkBtn" class="btn">Periksa</button>
+          <button id="nextBtn" class="btn" style="background:linear-gradient(90deg,#9be7ff,#c7f9cc)">Lanjut →</button>
+        </div>
+      </div>
+
+      <div id="explain" class="small" style="margin-top:6px;color:var(--muted)"></div>
+    </main>
+
+    <aside class="side">
+      <div class="card center" style="padding:12px">
+        <div style="font-size:1rem;font-weight:700">Petunjuk</div>
+        <div class="small" style="margin-top:8px">Baca ciri-ciri gambar. Ketuk jawaban A–C. Ketuk <strong>Periksa</strong> untuk melihat benar atau salah, lalu <strong>Lanjut</strong>.</div>
+        <div style="margin-top:10px;display:flex;gap:6px;align-items:center;justify-content:center">
+          <div style="font-size:26px">🧠</div>
+          <div style="font-size:22px">✨</div>
+          <div style="font-size:26px">🌟</div>
+        </div>
+      </div>
+
+      <div class="card center" style="padding:12px">
+        <div style="font-weight:700;margin-bottom:8px">Ringkasan</div>
+        <div class="small">29 soal • Pilihan ganda A–C • Musik tenang • Gambar lucu</div>
+      </div>
+    </aside>
+
+    <footer>Disiapkan untuk belajar sambil bermain — semoga seru! 🌟</footer>
+  </div>
+
+  <!-- audio element (external calm music) -->
+  <audio id="bgm" loop crossorigin="anonymous">
+    <!-- Example calm instrumental from Pixabay; jika browser memblokir autoplay, script akan menampilkan overlay 'Tap to play' -->
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1d5aa7b3f2.mp3?filename=peaceful-piano-11259.mp3" type="audio/mpeg">
+    Browsermu tidak mendukung audio.
+  </audio>
+
+<script>
+/* ======= DATA SOAL (29 soal) =======
+Each entry: q: description clue, options: [A,B,C], correct: index (0..2), img: an image url (Unsplash dynamic) */
+const questions = [
+  { q: "Banyak rak buku, anak-anak duduk membaca — tempat ini adalah ...", options:["Kantor","Perpustakaan","Kantin"], correct:1, img:"https://source.unsplash.com/400x300/?library,books" },
+  { q: "Ada papan tulis, meja guru, banyak murid — tempat ini adalah ...", options:["Sekolah","Pasar","Bank"], correct:0, img:"https://source.unsplash.com/400x300/?classroom,school" },
+  { q: "Banyak penjual sayur, ikan, buah — tempat ini adalah ...", options:["Pasar","Stadion","Bandara"], correct:0, img:"https://source.unsplash.com/400x300/?market,vegetables" },
+  { q: "Ada pesawat dan landasan pacu — tempat ini adalah ...", options:["Bandara","Pelabuhan","Terminal"], correct:0, img:"https://source.unsplash.com/400x300/?airport,plane" },
+  { q: "Layar besar, kursi gelap, popcorn — tempat ini adalah ...", options:["Bioskop","Kebun","Perpustakaan"], correct:0, img:"https://source.unsplash.com/400x300/?movie,theater,popcorn" },
+  { q: "Menjual obat, ada apoteker — tempat ini adalah ...", options:["Toko buku","Apotek","Apel shop"], correct:1, img:"https://source.unsplash.com/400x300/?pharmacy,medicine" },
+  { q: "Tempat menyimpan uang, ada teller — tempat ini adalah ...", options:["Bank","Gudang","Klinik"], correct:0, img:"https://source.unsplash.com/400x300/?bank,money" },
+  { q: "Ada dokter dan perawat, orang berobat di sini — tempat ini adalah ...", options:["Rumah sakit","Sekolah","Restoran"], correct:0, img:"https://source.unsplash.com/400x300/?hospital,doctor" },
+  { q: "Tempat menonton sepak bola, ada lapangan besar — ini adalah ...", options:["Stadion","Perpustakaan","Museum"], correct:0, img:"https://source.unsplash.com/400x300/?stadium,football" },
+  { q: "Tempat naik bus di pinggir jalan disebut ...", options:["Halte","Kelas","Kantin"], correct:0, img:"https://source.unsplash.com/400x300/?bus,stop" },
+  { q: "Ladang luas dengan padi — tempat bekerja para petani adalah ...", options:["Sawah","Toko","Bandara"], correct:0, img:"https://source.unsplash.com/400x300/?rice,field" },
+  { q: "Air luas tempat nelayan mencari ikan disebut ...", options:["Laut","Perpustakaan","Sekolah"], correct:0, img:"https://source.unsplash.com/400x300/?sea,fishing" },
+  { q: "Gedung besar dengan banyak toko di dalam disebut ...", options:["Mall","Masjid","Kantor polisi"], correct:0, img:"https://source.unsplash.com/400x300/?mall,shopping" },
+  { q: "Tempat pertunjukan tari dan musik biasanya di ...", options:["Gedung pertunjukan","Sawah","Bank"], correct:0, img:"https://source.unsplash.com/400x300/?theater,stage" },
+  { q: "Tempat orang beribadah berjamaah untuk umat Islam adalah ...", options:["Masjid","Bioskop","Kantin"], correct:0, img:"https://source.unsplash.com/400x300/?mosque,prayer" },
+  { q: "Tempat naik dan turun penumpang kereta disebut ...", options:["Stasiun","Bandara","Kantin"], correct:0, img:"https://source.unsplash.com/400x300/?train,station" },
+  { q: "Tempat kapal bersandar di tepi laut disebut ...", options:["Pelabuhan","Rumah sakit","Taman"], correct:0, img:"https://source.unsplash.com/400x300/?harbor,port" },
+  { q: "Tempat bermalam saat bepergian dengan kamar dan sarapan adalah ...", options:["Hotel","Apotek","Sekolah"], correct:0, img:"https://source.unsplash.com/400x300/?hotel,room" },
+  { q: "Tempat melihat hewan dari berbagai negara disebut ...", options:["Kebun binatang","Lapangan","Pasar"], correct:0, img:"https://source.unsplash.com/400x300/?zoo,animals" },
+  { q: "Di sekolah, tempat anak membeli makanan adalah ...", options:["Kantin","Ruang guru","Perpustakaan"], correct:0, img:"https://source.unsplash.com/400x300/?canteen,schoolfood" },
+  { q: "Tempat menyimpan benda bersejarah dan lukisan disebut ...", options:["Museum","Stadion","Taman"], correct:0, img:"https://source.unsplash.com/400x300/?museum,history" },
+  { q: "Tempat meminjam buku dan membaca di sekolah/main library adalah ...", options:["Perpustakaan","Kantin","Apotek"], correct:0, img:"https://source.unsplash.com/400x300/?library,children" },
+  { q: "Tempat menanam bunga dan bermain santai disebut ...", options:["Taman","Bandara","Sekolah"], correct:0, img:"https://source.unsplash.com/400x300/?park,flowers" },
+  { q: "Tempat menjaga keamanan dan polisi bekerja disebut ...", options:["Kantor polisi","Rumah sakit","Bank"], correct:0, img:"https://source.unsplash.com/400x300/?police,station" },
+  { q: "Tempat mengirim surat disebut ...", options:["Kantor pos","Kantin","Stadion"], correct:0, img:"https://source.unsplash.com/400x300/?post,office" },
+  { q: "Tempat besar di mana konser musik diadakan bisa saja di ...", options:["Stadion","Kelas","Rumah sakit"], correct:0, img:"https://source.unsplash.com/400x300/?concert,stadium" },
+  { q: "Di desa, tempat ibu menjual sayur disebut ...", options:["Pasar desa","Sekolah","Bank"], correct:0, img:"https://source.unsplash.com/400x300/?village,market" },
+  { q: "Tempat anak-anak bermain ayunan dan perosotan disebut ...", options:["Taman bermain","Kantin","Perpustakaan"], correct:0, img:"https://source.unsplash.com/400x300/?playground,children" }
+];
+
+const total = questions.length;
+document.getElementById('qtot').textContent = total;
+
+let idx = 0, score = 0, correctCount = 0, wrongCount = 0;
+let selectedIndex = null;
+const qnumEl = document.getElementById('qnum');
+const qtextEl = document.getElementById('qtext');
+const optsEl = document.getElementById('opts');
+const barFill = document.getElementById('barFill');
+const skEl = document.getElementById('sk');
+const countCorrectEl = document.getElementById('countCorrect');
+const countWrongEl = document.getElementById('countWrong');
+const explainEl = document.getElementById('explain');
+const celebrateBox = document.getElementById('celebrateBox');
+const celebrateText = document.getElementById('celeText');
+
+const bgm = document.getElementById('bgm');
+const muteBtn = document.getElementById('muteBtn');
+const checkBtn = document.getElementById('checkBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const restartBtn = document.getElementById('restart');
+
+// WebAudio for sound effects (pleasant chime / error blip)
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = AudioCtx ? new AudioCtx() : null;
+
+function playTone(freq, type='sine', time=0.12, vol=0.06){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type;
+  o.frequency.value = freq;
+  g.gain.value = vol;
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start();
+  o.stop(audioCtx.currentTime + time);
+}
+function playSuccess(){
+  // pleasant arpeggio
+  playTone(880,'sine',0.12,0.04);
+  setTimeout(()=>playTone(1100,'sine',0.12,0.03),100);
+}
+function playFail(){
+  playTone(220,'sawtooth',0.18,0.06);
+}
+
+/* Try to autoplay music on load. Many browsers block autoplay with audio,
+   so we attempt play() and if blocked show small notice (console). */
+async function tryPlayMusic(){
+  try{
+    await bgm.play();
+    muteBtn.textContent = '🔊';
+    muteBtn.setAttribute('aria-pressed','false');
+  }catch(e){
+    // Autoplay blocked. Show small hint on mute button (it will act as "start music" on click)
+    muteBtn.textContent = '▶️';
+    muteBtn.setAttribute('aria-pressed','true');
+  }
+}
+window.addEventListener('load', ()=> {
+  tryPlayMusic();
+});
+
+/* Mute/unmute toggle */
+let isMuted = false;
+muteBtn.addEventListener('click', async ()=>{
+  if(bgm.paused){
+    // start if paused
+    try{
+      await bgm.play();
+    }catch(e){
+      // some browsers require audioCtx resume on user gesture
+      if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      try{ bgm.play(); }catch(_){}
+    }
+  } else {
+    if(bgm.muted) { bgm.muted = false; isMuted=false; muteBtn.textContent='🔊'; }
+    else { bgm.muted = true; isMuted=true; muteBtn.textContent='🔈'; }
+  }
+});
+
+/* RENDERING QUESTIONS */
+function render(){
+  const item = questions[idx];
+  qnumEl.textContent = idx+1;
+  qtextEl.textContent = item.q;
+  barFill.style.width = `${Math.round(((idx+1)/total)*100)}%`;
+  optsEl.innerHTML = '';
+
+  // image + caption area
+  let imgWrap = document.querySelector('.image-wrap');
+  if(!imgWrap){
+    const wrapper = document.createElement('div');
+    wrapper.className = 'image-wrap';
+    wrapper.id = 'imgwrap';
+    // insert before options
+    const qboxLeft = document.querySelector('.q-box > div');
+    qboxLeft.insertBefore(wrapper, qboxLeft.firstChild);
+    imgWrap = wrapper;
+  }
+  imgWrap.innerHTML = `<img src="${item.img}&sig=${idx}" alt="Gambar soal ${idx+1}" loading="lazy">`;
+
+  // options A-C
+  const letters = ['A','B','C'];
+  item.options.forEach((opt,i)=>{
+    const d = document.createElement('div');
+    d.className = 'opt';
+    d.tabIndex = 0;
+    d.setAttribute('data-i', i);
+    d.innerHTML = `<div class="key">${letters[i]}</div><div style="flex:1">${opt}</div>`;
+    d.addEventListener('click', ()=> onSelect(i, d));
+    d.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') onSelect(i, d); });
+    optsEl.appendChild(d);
+  });
+
+  selectedIndex = null;
+  explainEl.textContent = '';
+  celebrateBox.classList.add('hidden');
+  // navigation buttons state
+  prevBtn.disabled = idx === 0;
+  nextBtn.disabled = false;
+}
+
+function onSelect(i, el){
+  // visual selection
+  selectedIndex = i;
+  document.querySelectorAll('.opt').forEach(o=>o.style.boxShadow='none');
+  el.style.boxShadow = '0 10px 30px rgba(12,30,38,0.12)';
+  // small pop animation
+  el.animate([{transform:'scale(0.98)'},{transform:'scale(1)'}],{duration:140, easing:'ease-out'});
+  // play small click (soft)
+  if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  playTone(440,'sine',0.06,0.03);
+}
+
+/* Periksa jawaban */
+function checkAnswer(){
+  if(selectedIndex === null){
+    // flash hint
+    const h = document.getElementById('hint');
+    h.animate([{opacity:0.3},{opacity:1}],{duration:400});
+    return;
+  }
+  const item = questions[idx];
+  const opts = document.querySelectorAll('.opt');
+  opts.forEach((el, i)=>{
+    el.style.pointerEvents = 'none';
+    if(i === item.correct){
+      el.classList.add('correct');
+    }
+    if(i === selectedIndex && i !== item.correct){
+      el.classList.add('wrong');
+    }
+  });
+  if(selectedIndex === item.correct){
+    score += 10;
+    correctCount++;
+    skEl.textContent = score;
+    countCorrectEl.textContent = correctCount;
+    explainEl.textContent = 'Benar! 🎉 Klik Lanjut untuk soal berikutnya.';
+    celebrateBox.classList.remove('hidden');
+    celebrateText.textContent = 'Hebat! Jawabanmu benar ✨';
+    // confetti bursts
+    spawnConfetti(18);
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    playSuccess();
+  } else {
+    wrongCount++;
+    countWrongEl.textContent = wrongCount;
+    explainEl.textContent = `Yah, bukan itu. Jawaban yang benar ditandai hijau. Ayo coba soal berikutnya.`;
+    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    playFail();
+  }
+  // auto-scroll small so explanation visible on small screens
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* Navigation */
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if(idx < total - 1){
+    idx++; render();
+  } else {
+    showFinal();
+  }
+});
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  if(idx > 0){ idx--; render(); }
+});
+document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+restartBtn.addEventListener('click', ()=> {
+  if(confirm('Mulai ulang kuis? Skor akan direset.')){
+    idx=0; score=0; correctCount=0; wrongCount=0; skEl.textContent='0'; countCorrectEl.textContent='0'; countWrongEl.textContent='0';
+    render();
+  }
+});
+
+/* Final screen */
+function showFinal(){
+  const main = document.getElementById('mainCard');
+  main.innerHTML = `
+    <div style="text-align:center;padding:28px">
+      <div style="font-size:40px">🎓</div>
+      <h2>Kuis Selesai!</h2>
+      <p style="font-weight:700;font-size:1.2rem">Nilai: ${score} dari ${total*10}</p>
+      <p class="small">Benar: ${correctCount} • Salah: ${wrongCount}</p>
+      <div style="margin-top:12px">
+        <button id="retryBtn" class="btn">Coba Lagi</button>
+        <button id="reviewBtn" class="ghost">Lihat Semua Jawaban</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('retryBtn').addEventListener('click', ()=> location.reload());
+  document.getElementById('reviewBtn').addEventListener('click', ()=> showReview());
+}
+
+/* Review: show all questions with correct answers */
+function showReview(){
+  const main = document.getElementById('mainCard');
+  main.innerHTML = `<div style="padding:12px"><h2>Review Jawaban</h2></div>`;
+  questions.forEach((it, i)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.margin = '10px 0';
+    card.innerHTML = `
+      <div style="display:flex;gap:14px;align-items:center">
+        <div style="width:110px;height:70px;overflow:hidden;border-radius:8px"><img src="${it.img}&sig=rev${i}" style="width:100%;height:100%;object-fit:cover"></div>
+        <div style="flex:1">
+          <div style="font-weight:700">Soal ${i+1}: ${it.q}</div>
+          <div class="small" style="margin-top:6px">Jawaban benar: <strong>${it.options[it.correct]}</strong></div>
+        </div>
+      </div>
+    `;
+    main.appendChild(card);
+  });
+  const back = document.createElement('div');
+  back.style.textAlign='center'; back.style.marginTop='12px';
+  back.innerHTML = `<button id="backHome" class="btn">Kembali ke Awal</button>`;
+  main.appendChild(back);
+  document.getElementById('backHome').addEventListener('click', ()=> location.reload());
+}
+
+/* confetti simple */
+function spawnConfetti(n=12){
+  for(let i=0;i<n;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = (20 + Math.random()*60) + '%';
+    c.style.top = (10 + Math.random()*60) + '%';
+    c.style.background = ['#FFD166','#06D6A0','#4CC9F0','#FF6B6B','#F79CD4'][Math.floor(Math.random()*5)];
+    document.body.appendChild(c);
+    // animate
+    c.animate([
+      {transform:`translateY(-10vh) rotate(${Math.random()*40}deg)`, opacity:1},
+      {transform:`translateY(${20+Math.random()*80}vh) rotate(${200+Math.random()*200}deg)`, opacity:0}
+    ], {duration:1400+Math.random()*800, easing:'ease-out'});
+    setTimeout(()=>{ c.remove(); }, 2200);
+  }
+}
+
+/* init render */
+render();
+
+/* Accessibility: keyboard next on Enter when focused on Next button */
+nextBtn.addEventListener('keydown', (e)=>{ if(e.key==='Enter') nextBtn.click(); });
+checkBtn.addEventListener('keydown', (e)=>{ if(e.key==='Enter') checkBtn.click(); });
+
+</script>
+</body>
+</html>
