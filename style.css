@@ -30,7 +30,7 @@ body {
 }
 
 .logo {
-  color: #f5f5f5;
+  color: #3d270a;
   font-size: 26px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -211,10 +211,12 @@ section {
 }
 
 .ceo-card img {
-  width: 100%;
-  border-radius: 18px;
-  margin-bottom: 12px;
-  object-fit: cover;
+  width: 140px;       /* ukuran seragam */
+  height: 140px;      /* ukuran seragam */
+  object-fit: cover;  /* menjaga proporsi, crop otomatis */
+  border-radius: 50px; /* menyesuaikan bentuk card */
+  display: block;
+  margin: 0 auto 10px;
 }
 
 /* MENU GRID PREMIUM */
@@ -282,31 +284,86 @@ section {
   background: linear-gradient(135deg, #d6249f, #fa7e1e);
 }
 
-/* RESPONSIVE NAVBAR */
-@media (max-width: 768px) {
-  .burger {
-    display: block;
-  }
+/* NAVBAR */
+.navbar {
+  width: 100%;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
 
+.navbar .logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #b87333;
+}
+
+/* BURGER (mobile) */
+.burger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.burger span {
+  width: 25px;
+  height: 3px;
+  background: #333;
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
   .nav-links {
     position: absolute;
-    top: 80px;
     right: 0;
-    background: rgba(20,20,20,0.95);
-    width: 230px;
+    top: 70px;
+    background: #fff;
+    width: 200px;
     flex-direction: column;
+    gap: 0;
+    padding: 20px;
     display: none;
-    border-radius: 0 0 0 15px;
-    padding: 20px 0;
-  }
-
-  .nav-links.nav-active {
-    display: flex;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
 
   .nav-links li {
-    padding: 15px 20px;
+    margin-bottom: 15px;
   }
 
-  
+  .burger {
+    display: flex;
+  }
+
+  .nav-active {
+    display: flex;
+  }
 }
+
+
+  
+
