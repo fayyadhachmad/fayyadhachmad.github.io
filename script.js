@@ -59,3 +59,13 @@ checkoutBtn.addEventListener("click", () => {
 
   window.open(url, "_blank");
 });
+// fungsi notifikasi toast
+function showToast(text) {
+  const toast = document.getElementById("toast");
+  toast.textContent = text;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000);
+}
