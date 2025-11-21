@@ -426,5 +426,19 @@ section {
   opacity: 1;
   transform: translateY(0);
 }
-  
+  .minus-btn {
+  margin-left: 10px;
+  padding: 4px 10px;
+  background: #b23b3b;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.minus-btn:hover {
+  background: #8b2f2f;
+}
 
