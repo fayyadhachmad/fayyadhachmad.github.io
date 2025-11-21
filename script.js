@@ -27,20 +27,30 @@ const checkoutBtn = document.getElementById("checkoutBtn");
 document.querySelectorAll(".add-cart").forEach(btn => {
   btn.addEventListener("click", () => {
     let itemName = btn.getAttribute("data-item");
-    cart.push(itemName);
+    // cari apakah item sudah ada di keranjang
+let existingItem = cart.find(i => i.name === itemName);
+
+if (existingItem) {
+  existingItem.qty += 1; // tambah jumlah
+} else {
+  cart.push({ name: itemName, qty: 1 }); // tambah item baru
+}
+
 renderCart();
-showToast(itemName + " ditambahkan ke keranjang");
+showToast(itemName + " ditambahkan (Qty: " + (existingItem ? existingItem.qty : 1) + ")");
   });
 });
 
 // render keranjang ke layar
-function renderCart() {
+
+  function renderCart() {
   cartList.innerHTML = "";
   cart.forEach((item, index) => {
     let li = document.createElement("li");
-    li.textContent = `${index + 1}. ${item}`;
+    li.textContent = `${index + 1}. ${item.name} × ${item.qty}`;
     cartList.appendChild(li);
   });
+  
 }
 
 // checkout ke WhatsApp
@@ -52,8 +62,8 @@ checkoutBtn.addEventListener("click", () => {
 
   let pesan = "Halo, saya ingin memesan:%0A";
   cart.forEach((item, i) => {
-    pesan += `${i + 1}. ${item}%0A`;
-  });
+  pesan += `${i + 1}. ${item.name} (×${item.qty})%0A`;
+});
 
   let nomor = "6285695570167"; // nomor WA kamu
   let url = `https://wa.me/${nomor}?text=${pesan}`;
