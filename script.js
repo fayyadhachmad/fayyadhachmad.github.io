@@ -47,11 +47,41 @@ document.querySelectorAll(".add-cart").forEach(btn => {
 // render keranjang
 function renderCart() {
   cartList.innerHTML = "";
+
   cart.forEach((item, index) => {
     let li = document.createElement("li");
-    li.textContent = `${index + 1}. ${item.name} × ${item.qty}`;
+
+    li.innerHTML = `
+      ${index + 1}. ${item.name} × ${item.qty}
+      <button class="minus-btn" data-item="${item.name}">−</button>
+    `;
+
     cartList.appendChild(li);
   });
+
+  // event tombol minus
+  document.querySelectorAll(".minus-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      let name = btn.getAttribute("data-item");
+      decreaseQty(name);
+    });
+  });
+}
+function decreaseQty(itemName) {
+  let item = cart.find(i => i.name === itemName);
+
+  if (!item) return;
+
+  if (item.qty > 1) {
+    item.qty -= 1;
+    showToast(itemName + " dikurangi (Qty: " + item.qty + ")");
+  } else {
+    // jumlah 1 → dihapus
+    cart = cart.filter(i => i.name !== itemName);
+    showToast(itemName + " dihapus dari keranjang");
+  }
+
+  renderCart();
 }
 
 // checkout ke WhatsApp
