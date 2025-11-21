@@ -441,4 +441,32 @@ section {
 .minus-btn:hover {
   background: #8b2f2f;
 }
+.ceo-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #3d270a;
+}
 
+.ceo-role {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #a67c52;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.ceo-role:hover {
+  color: #7a5838;
+  transform: translateY(-2px);
+}
+
+.ceo-desc {
+  font-size: 13px;
+  opacity: 0.85;
+  line-height: 1.4em;
+  max-width: 200px;
+  margin: 0 auto;
+}
