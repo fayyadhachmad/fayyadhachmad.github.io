@@ -28,7 +28,8 @@ document.querySelectorAll(".add-cart").forEach(btn => {
   btn.addEventListener("click", () => {
     let itemName = btn.getAttribute("data-item");
     cart.push(itemName);
-    renderCart();
+renderCart();
+showToast(itemName + " ditambahkan ke keranjang");
   });
 });
 
