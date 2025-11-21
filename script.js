@@ -16,6 +16,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
   });
 });
+
 /* ============================
    FITUR KERANJANG
 ============================ */
@@ -26,31 +27,31 @@ const checkoutBtn = document.getElementById("checkoutBtn");
 // tombol tambah ke keranjang
 document.querySelectorAll(".add-cart").forEach(btn => {
   btn.addEventListener("click", () => {
+
     let itemName = btn.getAttribute("data-item");
-    // cari apakah item sudah ada di keranjang
-let existingItem = cart.find(i => i.name === itemName);
 
-if (existingItem) {
-  existingItem.qty += 1; // tambah jumlah
-} else {
-  cart.push({ name: itemName, qty: 1 }); // tambah item baru
-}
+    // cek apakah item sudah ada
+    let existingItem = cart.find(i => i.name === itemName);
 
-renderCart();
-showToast(itemName + " ditambahkan (Qty: " + (existingItem ? existingItem.qty : 1) + ")");
+    if (existingItem) {
+      existingItem.qty += 1;
+    } else {
+      cart.push({ name: itemName, qty: 1 });
+    }
+
+    renderCart();
+    showToast(itemName + " ditambahkan (Qty: " + (existingItem ? existingItem.qty : 1) + ")");
   });
 });
 
-// render keranjang ke layar
-
-  function renderCart() {
+// render keranjang
+function renderCart() {
   cartList.innerHTML = "";
   cart.forEach((item, index) => {
     let li = document.createElement("li");
     li.textContent = `${index + 1}. ${item.name} × ${item.qty}`;
     cartList.appendChild(li);
   });
-  
 }
 
 // checkout ke WhatsApp
@@ -62,15 +63,16 @@ checkoutBtn.addEventListener("click", () => {
 
   let pesan = "Halo, saya ingin memesan:%0A";
   cart.forEach((item, i) => {
-  pesan += `${i + 1}. ${item.name} (×${item.qty})%0A`;
-});
+    pesan += `${i + 1}. ${item.name} (×${item.qty})%0A`;
+  });
 
-  let nomor = "6285695570167"; // nomor WA kamu
+  let nomor = "6285695570167"; // ganti dengan nomor kamu
   let url = `https://wa.me/${nomor}?text=${pesan}`;
 
   window.open(url, "_blank");
 });
-// fungsi notifikasi toast
+
+// fungsi toast notifikasi
 function showToast(text) {
   const toast = document.getElementById("toast");
   toast.textContent = text;
