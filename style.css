@@ -236,24 +236,64 @@ section {
   box-shadow: 0 12px 30px rgba(0,0,0,0.1);
   cursor: pointer;
   position: relative;
+  overflow: visible;
 }
 
-.discount-badge {
+.ribbon {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #e63946; /* warna merah promo */
+  top: 12px;
+  right: -45px;
+  background: #e63946;
   color: #fff;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 140px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 5px 0;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 9;
+}
+
+/* Efek lipatan supaya terlihat seperti stiker dunia nyata */
+.ribbon::before,
+.ribbon::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  border-left: 5px solid #8a232f;
+  border-right: 5px solid #8a232f;
+  border-bottom: 5px solid transparent;
+}
+
+.ribbon::before {
+  left: 0;
+}
+
+.ribbon::after {
+  right: 0;
+}
+
+.menu-price {
   display: flex;
   justify-content: center;
+  gap: 8px;
   align-items: center;
-  font-size: 14px;
-  z-index: 10;
-  box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
+
+.old-price {
+  text-decoration: line-through;
+  color: #8a8a8a;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.new-price {
+  color: #e63946;
+  font-weight: 700;
+  font-size: 18px;
+}
+
 
 .menu-card:hover {
   transform: translateY(-4px);
